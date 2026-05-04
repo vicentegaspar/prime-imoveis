@@ -1,0 +1,78 @@
+---
+import { property } from '../data/property';
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const primaryImage = property.images[0]?.src
+  ? new URL(property.images[0].src, Astro.site).toString()
+  : undefined;
+const allImages = property.images.map((img) => new URL(img.src, Astro.site).toString());
+
+// Schema.org RealEstateListing — businessFunction "LeaseOut" marks this as a
+// rental (not a sale). Google validates against schema.org + GoodRelations.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'RealEstateListing',
+  url: pageUrl,
+  name: property.name,
+  description: property.description,
+  image: allImages.length > 0 ? allImages : undefined,
+  datePosted: new Date().toISOString().slice(0, 10),
+  mainEntity: {
+    '@type': 'Apartment',
+    name: property.name,
+    description: property.description,
+    numberOfRooms: property.bedrooms,
+    numberOfBedrooms: property.bedrooms,
+    numberOfBathroomsTotal: property.bathrooms,
+    numberOfFullBathrooms: property.bathrooms,
+    floorSize: {
+      '@type': 'QuantitativeValue',
+      value: property.areaSqm,
+      unitCode: 'MTK',
+    },
+    amenityFeature: property.features.map((feature) => ({
+      '@type': 'LocationFeatureSpecification',
+      name: feature,
+      value: true,
+    })),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: property.address.street,
+      addressLocality: property.address.city,
+      addressRegion: property.address.state,
+      postalCode: property.address.postalCode,
+      addressCountry: property.address.country,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: property.address.latitude,
+      longitude: property.address.longitude,
+    },
+    image: primaryImage,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: property.rentMonthlyBRL,
+    priceCurrency: 'BRL',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: property.rentMonthlyBRL,
+      priceCurrency: 'BRL',
+      unitCode: 'MON',
+    },
+    businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut',
+    availability: 'https://schema.org/InStock',
+    url: pageUrl,
+  },
+  provider: {
+    '@type': 'RealEstateAgent',
+    name: 'Prime Imóveis',
+    url: siteUrl,
+    telephone: property.contact.phone,
+    email: property.contact.email,
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline></script>

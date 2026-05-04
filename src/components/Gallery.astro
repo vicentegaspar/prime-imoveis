@@ -1,0 +1,34 @@
+---
+import { property } from '../data/property';
+
+// Skip the first image — it's already the Hero background.
+const photos = property.images.slice(1);
+---
+
+<section id="galeria" class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <header class="mb-10 max-w-2xl">
+      <p class="text-sm font-medium uppercase tracking-wider text-emerald-700">Galeria</p>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        Fotos do imóvel
+      </h2>
+      <p class="mt-3 text-slate-600">
+        Confira os ambientes em detalhe. Para visita presencial, fale conosco no formulário abaixo.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {photos.map((photo) => (
+        <figure class="aspect-[4/3] overflow-hidden rounded-lg bg-slate-100">
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition duration-300 hover:scale-105"
+          />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

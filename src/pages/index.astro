@@ -1,29 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Hero from '../components/Hero.astro';
+import Details from '../components/Details.astro';
+import Gallery from '../components/Gallery.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import ContactForm from '../components/ContactForm.astro';
+import JsonLd from '../components/JsonLd.astro';
 import { property } from '../data/property';
 
-const title = `${property.name} | Prime Imóveis`;
+const title = `${property.name} para alugar | Prime Imóveis`;
 const description = property.description;
+const ogImage = property.images[0]?.src;
 ---
 
-<BaseLayout title={title} description={description}>
-  <main class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-6 py-24 text-center">
-    <span class="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-500">
-      Hello World — Cloudflare Pages
-    </span>
-    <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-      Prime Imóveis
-    </h1>
-    <p class="mt-4 max-w-xl text-lg text-slate-600">
-      Site de aluguel em construção. Pipeline Astro + Tailwind + Cloudflare Pages
-      validado. Próxima etapa: Frontend Agent assume os componentes (Hero, Galeria,
-      Detalhes, Mapa, Formulário).
-    </p>
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <JsonLd slot="head" />
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-      <span class="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white">Astro</span>
-      <span class="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white">Tailwind</span>
-      <span class="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white">Cloudflare</span>
-    </div>
+  <SiteHeader />
+  <main>
+    <Hero />
+    <Details />
+    <Gallery />
+    <MapEmbed />
+    <ContactForm />
   </main>
+  <SiteFooter />
 </BaseLayout>
