@@ -1,4 +1,4 @@
-# Prime Imóveis
+# Prime Imóveis Tecmundo
 
 Single-listing real estate landing page for a property up for rent. Built to be
 fast, SEO-strong, and conversion-oriented, deployed entirely on the Cloudflare
