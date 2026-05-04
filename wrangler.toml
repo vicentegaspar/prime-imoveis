@@ -1,0 +1,35 @@
+# Cloudflare configuration for Prime Imóveis.
+#
+# This file is consumed by `wrangler` for two distinct purposes:
+#
+#   1. Cloudflare Pages: most teams configure Pages from the dashboard
+#      (build command `npm run build`, output `dist/`). This file is kept
+#      here so `wrangler pages deploy dist` works locally and from CI.
+#
+#   2. Cloudflare Workers: reserved for the future contact / scheduling
+#      form endpoint. The Worker block is intentionally commented until
+#      the Backend Agent implements it.
+#
+# Refs:
+#   - https://developers.cloudflare.com/pages/configuration/build-configuration/
+#   - https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "prime-imoveis"
+compatibility_date = "2026-05-01"
+pages_build_output_dir = "./dist"
+
+# ---------------------------------------------------------------------------
+# Workers (deferred — uncomment when the Backend Agent owns the contact form)
+# ---------------------------------------------------------------------------
+#
+# [[workers]]
+# name = "prime-imoveis-contact"
+# main = "workers/contact/src/index.ts"
+# compatibility_date = "2026-05-01"
+#
+# [workers.vars]
+# CONTACT_TO_EMAIL = ""
+#
+# [[workers.r2_buckets]]
+# binding = "ASSETS"
+# bucket_name = "prime-imoveis-assets"
